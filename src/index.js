@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
         const {error, user} = addUser({id: socket.id, ...options})
 
         if(error){
-            callback(error)
+            return callback(error)
         }
 
         socket.join(user.room)
@@ -53,6 +53,12 @@ io.on('connection', (socket) => {
         io.to(user.room).emit('message', generateMessage(user.username, message))
         callback()
     })
+    
+    socket.on('sendLocation', (coords, callback) => {
+        const user = getUser(socket.id)
+        io.to(user.room).emit('locationMessage',generateLocationMessage(user.username, `https://www.google.com/maps/@${coords.latitude},${coords.latitude}`))
+        callback()
+    })
 
     socket.on('disconnect', () => {
         const user = removeUser(socket.id)
@@ -64,12 +70,6 @@ io.on('connection', (socket) => {
             })
         }
     })  
-
-    socket.on('sendLocation', (coords, callback) => {
-        const user = getUser(socket.id)
-        io.to(user.room).emit('locationMessage',generateLocationMessage(user.username, `https://www.google.com/maps/@${coords.latitude},${coords.latitude}`))
-        callback()
-    })
 })
 
 app.get('/chat', (req, res) => {
