@@ -60,7 +60,7 @@ io.on('connection', (socket) => {
             io.to(user.room).emit('message', generateMessage(user.username, `${user.username} has disconnected`))
             io.to(user.room).emit('roomData', {
                 room: user.room,
-                users: getUsersInRoom(user.room)
+                users: getUserInRoom(user.room)
             })
         }
     })  

@@ -38,9 +38,9 @@ const removeUser = ((id) => {
         return users.splice(index, 1)[0]
     }
 })
-const getUser = ((id) => {
+const getUser = (id) => {
     return users.find((user) => user.id === id)
-})
+}
 
 const getUserInRoom = (room) => {
     return users.filter((user) => user.room === room)
